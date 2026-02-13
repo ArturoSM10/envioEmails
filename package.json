@@ -2,13 +2,13 @@
   "name": "envio-emails",
   "version": "1.0.0",
   "description": "",
-  "homepage": "https://github.com/ArturoSM10/carritoCompras.git#readme",
+  "homepage": "https://github.com/ArturoSM10/envioEmails.git#readme",
   "bugs": {
-    "url": "https://github.com/ArturoSM10/carritoCompras.git/issues"
+    "url": "https://github.com/ArturoSM10/envioEmails.git/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ArturoSM10/carritoCompras.git"
+    "url": "git+https://github.com/ArturoSM10/envioEmails.git"
   },
   "license": "ISC",
   "author": "Arturo Mendoza",
