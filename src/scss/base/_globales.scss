@@ -1,5 +1,6 @@
 @use "sass:color";
 @use './variables' as v;
+@use '../componets/mixins' as m;
 
 html {
     font-size: 62.5%;
@@ -37,6 +38,9 @@ img {
 
 [class*="__contenedor"] {
     width: 85%;
+    @include m.tablet {
+        width: 50%;
+    }
     max-width: 120rem;
     margin: 0 auto;
 }
