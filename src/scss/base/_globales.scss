@@ -39,6 +39,10 @@ img {
 [class*="__contenedor"] {
     width: 85%;
     @include m.tablet {
+        width: 70%;
+    }
+
+    @include m.desktop {
         width: 50%;
     }
     max-width: 120rem;
