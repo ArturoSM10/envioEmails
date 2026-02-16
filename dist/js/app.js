@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', leerEventos);
 
 const formulario = document.querySelector('.form');
 const contenedorBtn = document.querySelector('.campo--btn');
-const btnEnviar = document.querySelector('.submit'); 
+const btnEnviar = document.querySelector('.submit');
 
 const validaciones = {
     email: validarEmail,
@@ -23,6 +23,12 @@ const botones = {
 
 function leerEventos() {
 
+    eventosInput();
+    eventosBtn();
+
+}
+
+function eventosInput() {
     formulario.addEventListener('input', e => {
       const validador = validaciones[e.target.id];
       if (validador) {
@@ -33,9 +39,6 @@ function leerEventos() {
         activarBtn(estadoCampos);
       }
     });
-
-    eventosBtn();
-
 }
 
 function validarEmail(entrada) {
@@ -48,7 +51,7 @@ function validarEmail(entrada) {
     }
     eliminarAlerta(entrada);
     return valido;
-} 
+}
 
 function validarTexto(entrada) {
     const valido = entrada.value.trim().length > 1;
@@ -58,7 +61,7 @@ function validarTexto(entrada) {
     }
     eliminarAlerta(entrada);
     return valido;
-} 
+}
 
 function validarFormulario() {
     return Object.values(estado).every( valor => valor);
@@ -102,11 +105,23 @@ function eventosBtn() {
     })
 }
 
-function botonEnviar(entrada) {
-    agregarSpinner();
-    // setTimeout(()=>{
-    //     agregarSpinner();
-    // }, 3000);
+function botonEnviar() {
+    const spinnerContenedor = document.querySelector('.spinner');
+    const spinner = document.querySelector('.spinner .sk-chase');
+    spinner.style.display = 'block';
+    const alertaEnvio = document.createElement('P');
+    alertaEnvio.textContent = 'Email enviado correctamente';
+    alertaEnvio.classList.add('alert', 'correcto');
+
+    setTimeout(()=>{
+        spinner.style.display = 'none';
+        spinnerContenedor.appendChild(alertaEnvio);
+        botonReset();
+        setTimeout(()=>{
+            alertaEnvio.remove();
+        },1000)
+    }, 3000);
+
 }
 
 function botonReset() {
@@ -118,26 +133,11 @@ function botonReset() {
 
     Object.values(campos).forEach(campo => {
         campo.value = '';
+        estado[campo.id] = false;
         eliminarAlerta(campo);
     })
 
-}
+    const estadoCampos = validarFormulario();
+    activarBtn(estadoCampos);
 
-function agregarSpinner() {
-    const spinner = document.querySelector('.spinner .sk-chase');
-    const spinnerContenedor = document.querySelector('.spinner');
-    spinner.style.display = 'block';
-    const alertaEnvio = document.createElement('P');
-    alertaEnvio.textContent = 'Email enviado correctamente';   
-    alertaEnvio.classList.add('alert', 'correcto'); 
-    setTimeout(()=>{
-        spinner.style.display = 'none';
-        spinnerContenedor.appendChild(alertaEnvio);
-        setTimeout(()=>{
-            spinnerContenedor.remove();
-            botonReset();
-        },1000)
-    }, 3000);
-
-    
 }
