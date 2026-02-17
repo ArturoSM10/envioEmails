@@ -33,33 +33,32 @@ function eventosInput() {
       const validador = validaciones[e.target.id];
       if (validador) {
         const esValido = validador(e.target);
-
-        estado[e.target.id] = esValido;
-        const estadoCampos = validarFormulario();
-        activarBtn(estadoCampos);
+        actualizarEstado(e.target.id, esValido);
       }
     });
+}
+
+function manejarResultado(input, valido, texto) {
+    if (!valido) { 
+        crearAlerta(texto, input);
+        return;
+    }
+
+    eliminarAlerta(input);
 }
 
 function validarEmail(entrada) {
     const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     const valido = regexEmail.test(entrada.value);
 
-    if(!valido) {
-        crearAlerta('El email no es válido', entrada);
-        return valido;
-    }
-    eliminarAlerta(entrada);
+    manejarResultado(entrada, valido, 'El email no es valido');
     return valido;
 }
 
 function validarTexto(entrada) {
     const valido = entrada.value.trim().length > 1;
-    if(!valido) {
-        crearAlerta('Este campo no puede ir vacio o es muy corto', entrada);
-        return valido;
-    }
-    eliminarAlerta(entrada);
+
+    manejarResultado(entrada, valido, 'Este campo no puede ir vacio o es muy corto');
     return valido;
 }
 
@@ -78,7 +77,7 @@ function activarBtn(estado) {
 function crearAlerta(text, child) {
     const id = child.id;
     const campo = document.getElementById(id).parentElement;
-    const existe = campo.lastElementChild.classList.contains('alert')
+    const existe = campo.querySelector('.alert');
     if (existe) return;
     const error = document.createElement('p');
     error.textContent = text;
@@ -88,20 +87,20 @@ function crearAlerta(text, child) {
 
 function eliminarAlerta (entrada) {
     const parent = entrada.parentElement;
-    const ultimoElemento= parent.lastElementChild;
-    if (ultimoElemento.classList.contains('alert')) {
+    const ultimoElemento= parent.querySelector('.alert');
+    if (ultimoElemento) {
         ultimoElemento.remove();
     }
 }
 
 function eventosBtn() {
     contenedorBtn.addEventListener('click', e => {
-        e.preventDefault()
-        const validador = botones[e.target.id];
-        if (validador) {
-            const esValido = validador(e.target);
+        e.preventDefault();
+        const boton = e.target.closest('button');
+        if (!boton) return;
 
-        }
+        const validador = botones[boton.id];
+        if (validador) validador();
     })
 }
 
@@ -140,4 +139,9 @@ function botonReset() {
     const estadoCampos = validarFormulario();
     activarBtn(estadoCampos);
 
+}
+
+function actualizarEstado(id, valido) {
+    estado[id] = valido;
+    activarBtn(validarFormulario());
 }
